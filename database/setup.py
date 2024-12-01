@@ -22,10 +22,7 @@ sql_statements = [
         );""",
 
     """CREATE TABLE IF NOT EXISTS reply (
-            id INTEGER PRIMARY KEY, 
-            title TEXT NOT NULL, 
-            priority INT, 
-            status text,
+            id INTEGER PRIMARY KEY,
             creator_id INT NOT NULL, 
             post_date DATE NOT NULL, 
             body text NOT NULL,
