@@ -1,24 +1,30 @@
 from connect import DatabaseConnection
 import sqlite3
-
 class DatabaseOperation:
-    def execute_db_query(db_name, sql, *params):
+    def execute_db_query(self, db_name:str, sql:str, *params:tuple) -> int:
+        print("Parameters passed:")
+        print(*params)
+        print(sql)
+        print(db_name)
         try:
             # Initialize the database connection.
             db_conn = DatabaseConnection(db_name)
-            connection = db_conn.connect()
-            cursor = connection.cursor()
-            
-            # execute the command
-            cursor.execute(sql, *params)
-            connection.commit()
-            lastid = cursor.lastrowid
-            # close the connection
-            connection.close()
-            return lastid
+            with db_conn.connect() as connection:
+                cursor = connection.cursor()               
+                # execute the command
+                try:
+                    cursor.execute(sql, params)
+                    connection.commit()
+                except sqlite3.Error as e:
+                    print("problem here")
+                    print(e)
+                lastid = cursor.lastrowid
+                # close the connection
+                connection.close()
+                return lastid
         except sqlite3.Error as e:
             print(e)
-    def execute_db_update(db_name, sql, object):
+    def execute_db_update(self, db_name:str, sql:str, object:tuple) -> int:
         try:
             # Initialize the database connection.
             db_conn = DatabaseConnection(db_name)
@@ -38,54 +44,54 @@ class DatabaseOperation:
             print(e)
 
     # adding to the database
-    def add_user(db_name,user):
+    def add_user(self,db_name:str,user:tuple):
         sql = ''' INSERT INTO users(name, role, email, password)
         VALUES(?,?,?,?)'''
         # get id for confirmation
         lastid = self.execute_db_query(db_name,sql,user)
         # return the last id
         return lastid
-    def add_ticket(db_name,ticket):
+    def add_ticket(self,db_name:str,ticket:tuple) -> int:
         sql = ''' INSERT INTO tickets(title, priority, status, creator_id, open_date, close_date, body)
         VALUES(?, ?, ?, ?, ?, ?, ?)'''
         # get id for confirmation
         lastid = self.execute_db_query(db_name,sql,ticket)
         # return the last id
         return lastid
-    def add_reply(db_name,reply):
+    def add_reply(self,db_name:str,reply:tuple):
         sql = ''' INSERT INTO replies(creator_id, post_date, body, ticket_id)
         VALUES(?, ?, ?, ?)'''
         # get id for confirmation
         lastid = self.execute_db_query(db_name,sql,reply)
         # return the last id
         return lastid   
-    def add_signin(db_name,username,password):
-        sql = ''' INSERT INTO signin(name, role, email, password)
-        VALUES(?,?,?,?)'''
+    def add_signin(self,db_name:str,login:tuple):
+        sql = ''' INSERT INTO signin(username, password)
+        VALUES(?,?)'''
         # get id for confirmation
-        lastid = self.execute_db_query(db_name,sql,username,password)
-        # return the last id
-        return lastid 
+        print(login)
+        lastid = self.execute_db_query(db_name,sql,login)
+        return lastid
     # UPDATE items in database
-    def update_user(db_name,user,userID):
+    def update_user(self,db_name:str,user:tuple,userID):
         sql = '''UPDATE users 
         SET name=?, role=?, email=?, password=? 
         WHERE id = ? '''
         rowcount = self.execute_db_update(db_name,sql,user,userID)
         return rowcount
-    def update_ticket(db_name,ticket,ticketID):
+    def update_ticket(self,db_name:str,ticket:tuple,ticketID):
         sql = '''UPDATE tickets 
         SET title=?, priority=?, status=?, creator_id=?, open_date=?, 
         close_date=?, body=? WHERE id=?'''
         rowcount = self.execute_db_update(db_name,sql,ticket,ticketID)
         return rowcount
-    def update_reply(db_name,reply,replyID):
+    def update_reply(self,db_name:str,reply:tuple,replyID):
         sql = '''UPDATE replies SET body=? WHERE id=?'''
         rowcount = self.execute_db_update(db_name,sql,reply,replyID)
         return rowcount
 
     # DELETE items in database
-    def delete_user(db_name,userID):
+    def delete_user(self,db_name:str,userID):
         sql = 'DELETE FROM users WHERE id = ?'
         try:
             with sqlite3.connect(db_name) as conn:
@@ -95,7 +101,7 @@ class DatabaseOperation:
         except sqlite3.OperationalError as e:
             print(e)
     # delete ticket
-    def delete_ticket(db_name,ticketID):
+    def delete_ticket(self,db_name:str,ticketID):
         sql = 'DELETE FROM tickets WHERE id = ?'
         try:
             with sqlite3.connect(db_name) as conn:
@@ -105,7 +111,7 @@ class DatabaseOperation:
         except sqlite3.OperationalError as e:
             print(e)
     # delete reply
-    def delete_reply(db_name,replyID):
+    def delete_reply(self,db_name:str,replyID):
         sql = 'DELETE FROM tickets WHERE id = ?'
         try:
             with sqlite3.connect(db_name) as conn:
@@ -117,7 +123,7 @@ class DatabaseOperation:
         
     # GET from databse
     # get single user by id
-    def get_reply_by_id(self, db_name, user_id):
+    def get_user_by_id(self,db_name:str,user_id):
         sql = '''SELECT * FROM users WHERE id = ?'''
         try:
             with sqlite3.connect(db_name) as conn:
@@ -129,7 +135,7 @@ class DatabaseOperation:
             print(f"Error fetching reply by ID: {e}")
             return None
     # get single ticket by id
-    def get_ticket_by_id(self, db_name, ticket_id):
+    def get_ticket_by_id(self,db_name:str,ticket_id):
         sql = '''SELECT * FROM tickets WHERE id = ?'''
         try:
             with sqlite3.connect(db_name) as conn:
@@ -141,7 +147,7 @@ class DatabaseOperation:
             print(f"Error fetching reply by ID: {e}")
             return None
     # get all replies for a user
-    def get_tickets_by_user(self, db_name, user_id):
+    def get_tickets_by_user(self,db_name:str,user_id):
         sql = '''SELECT * FROM tickets WHERE user_id = ? ORDER BY post_date'''
         try:
             with sqlite3.connect(db_name) as conn:
@@ -153,7 +159,7 @@ class DatabaseOperation:
             print(f"Error fetching replies by ticket ID: {e}")
             return None
     # get single reply by id
-    def get_reply_by_id(self, db_name, reply_id):
+    def get_reply_by_id(self,db_name:str,reply_id):
         sql = '''SELECT * FROM replies WHERE id = ?'''
         try:
             with sqlite3.connect(db_name) as conn:
@@ -165,7 +171,7 @@ class DatabaseOperation:
             print(f"Error fetching reply by ID: {e}")
             return None
     # get all replies for a ticket
-    def get_replies_by_ticket_id(self, db_name, ticket_id):
+    def get_replies_by_ticket_id(self,db_name:str,ticket_id):
         sql = '''SELECT * FROM replies WHERE ticket_id = ? ORDER BY post_date'''
         try:
             with sqlite3.connect(db_name) as conn:

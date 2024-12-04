@@ -31,6 +31,12 @@ sql_statements = [
             FOREIGN KEY (ticket_id) REFERENCES tickets (id)
         );""",
 
+    """CREATE TABLE IF NOT EXISTS signin (
+        id INTEGER PRIMARY KEY,
+        username text NOT NULL, 
+        password text NOT NULL
+    );"""
+
 ]
 
 # create a database connection
@@ -49,3 +55,8 @@ try:
         print("Tables created successfully.")
 except sqlite3.OperationalError as e:
     print("Failed to create tables:", e)
+
+
+def create_table():
+    cursor.execute("CREATE TABLE IF NOT EXISTS signin(usernames VARCHAR, passwords VARCHAR)")
+    conn.commit()
