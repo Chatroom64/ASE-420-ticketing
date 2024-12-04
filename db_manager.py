@@ -1,11 +1,7 @@
 from connect import DatabaseConnection
 import sqlite3
 class DatabaseOperation:
-    def execute_db_query(self, db_name:str, sql:str, *params:tuple) -> int:
-        print("Parameters passed:")
-        print(*params)
-        print(sql)
-        print(db_name)
+    def execute_db_query(self, db_name:str, sql:str, params:tuple) -> int:
         try:
             # Initialize the database connection.
             db_conn = DatabaseConnection(db_name)
@@ -19,8 +15,6 @@ class DatabaseOperation:
                     print("problem here")
                     print(e)
                 lastid = cursor.lastrowid
-                # close the connection
-                connection.close()
                 return lastid
         except sqlite3.Error as e:
             print(e)
@@ -69,7 +63,6 @@ class DatabaseOperation:
         sql = ''' INSERT INTO signin(username, password)
         VALUES(?,?)'''
         # get id for confirmation
-        print(login)
         lastid = self.execute_db_query(db_name,sql,login)
         return lastid
     # UPDATE items in database
