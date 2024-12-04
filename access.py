@@ -1,47 +1,25 @@
 import sqlite3
 from db_manager import DatabaseOperation
+db_name = 'data.db'
+db_ops = DatabaseOperation()
+
 conn = sqlite3.connect("data.db")
 cursor = conn.cursor()
-# creates the table that stores credentials
-def create_table():
-    cursor.execute("CREATE TABLE IF NOT EXISTS signin(usernames VARCHAR, passwords VARCHAR)")
-    conn.commit()
-def add_user():
-    global username
-    username = input("Create username: ")
-    password = input("Create password: ")
-    role = "client"
-    cursor.execute("INSERT INTO signin (usernames, passwords) VALUES (?, ?)", (username, password,))
-    conn.commit()
-    return username
+
 def auth_user():
-    username = input("Username: ")
-    password = input("Password: ")
-    isUsername = username == usernames
-    isPassword = password == passwords
+    input_username = input("Username: ")
+    input_password = input("Password: ")
+    isUsername = input_username == username
+    isPassword = input_password == password
     # create signup page
-def signup_page():
-    '''try:
-        with sqlite3.connect("data.db") as conn:
-            #username = add_user()
-            print(f'Account created for {username}')
-    except sqlite3.Error as e:
-        print(e)
-    finally:
-        exe = "Welcome, "
-        print(username)'''
-    username = db_ops.add_signin('data.db','test@email.com','Test1234')
-    print(username)
-db_ops = DatabaseOperation()
-create_table()
-signup_page()
-# Create the signin page
-def signin_page():
-    try:
-        with sqlite3.connect("data.db") as conn:
-            add_user()
-            print(f'Signed in')
-    except sqlite3.Error as e:
-        print(e)
-    finally:
-        print('Welcome back, {username}!')
+    
+def signup_page(username: str, password: str):
+    newUser = tuple(username,)
+    newUser += tuple(password,)
+    newID = db_ops.add_signin(db_name,newUser)
+    print(newID)
+username = input("Username: ")
+password = input("Password: ")
+signup_page(username, password)
+
+# Create the signup page
