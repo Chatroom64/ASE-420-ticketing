@@ -11,10 +11,9 @@ class DatabaseOperation:
                 try:
                     cursor.execute(sql, params)
                     connection.commit()
+                    lastid = cursor.lastrowid
                 except sqlite3.Error as e:
-                    print("problem here")
                     print(e)
-                lastid = cursor.lastrowid
                 return lastid
         except sqlite3.Error as e:
             print(e)
@@ -31,8 +30,6 @@ class DatabaseOperation:
             cursor.execute(sql, object, recordID)
             connection.commit()
             rowcount = cursor.rowcount
-            # close the connection
-            connection.close()
             return rowcount
         except sqlite3.Error as e:
             print(e)

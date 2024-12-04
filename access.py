@@ -7,10 +7,10 @@ conn = sqlite3.connect("data.db")
 cursor = conn.cursor()
 
 def auth_user():
-    username = input("Username: ")
-    password = input("Password: ")
-    isUsername = username == usernames
-    isPassword = password == passwords
+    input_username = input("Username: ")
+    input_password = input("Password: ")
+    isUsername = input_username == username
+    isPassword = input_password == password
     # create signup page
     
 def signup_page(username: str, password: str):
@@ -22,13 +22,4 @@ username = input("Username: ")
 password = input("Password: ")
 signup_page(username, password)
 
-# Create the signin page
-def signin_page():
-    try:
-        with sqlite3.connect("data.db") as conn:
-            add_user()
-            print(f'Signed in')
-    except sqlite3.Error as e:
-        print(e)
-    finally:
-        print('Welcome back, {username}!')
+# Create the signup page
