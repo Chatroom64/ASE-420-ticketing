@@ -31,7 +31,7 @@ class App(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, CreateTicket, PageTwo):
+        for F in (HomePage, CreateTicket, PageTwo):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -41,14 +41,14 @@ class App(tk.Tk):
             # will be the one that is visible.
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame("StartPage")
+        self.show_frame("HomePage")
 
     def show_frame(self, page_name):
         '''Show a frame for the given page name'''
         frame = self.frames[page_name]
         frame.tkraise()
 
-class StartPage(tk.Frame):
+class HomePage(tk.Frame):
     def __init__(self, parent, controller):
         ttk.Frame.__init__(self, parent)
         self.controller = controller
@@ -67,27 +67,60 @@ class CreateTicket(tk.Frame):
     def __init__(self, parent, controller):
         ttk.Frame.__init__(self, parent)
         self.controller = controller
+        priorities = (('Critical', '1'),
+                    ('Medium', '2'),
+                    ('Low', '3'))
 
         # label
         self.label = ttk.Label(self, text='Create a Ticket')
         self.label.pack()
 
         # title label
-        self.title_label = ttk.Label(self, text='Ticket Title:')
-        self.title_label.pack()
+        title_label = ttk.Label(self, text='Ticket Title:')
+        title_label.pack()
         #title entry
-        self.title_entry = ttk.Entry(self, textvariable=self.controller.shared_data["tickettitle"])
-        self.title_entry.pack(padx=5, pady=5, fill='x', expand=False)
-        self.title_entry.focus()
+        title_entry = ttk.Entry(self, textvariable=self.controller.shared_data["tickettitle"])
+        title_entry.pack(padx=5, pady=5, fill='x', expand=False)
+        title_entry.focus()
 
-        #button
+        # priority label
+        title_label = ttk.Label(self, text='Pick a Priority:')
+        title_label.pack()
+        # priority radio
+        selected = tk.StringVar()
+        for priority in priorities:
+            priority_radio = ttk.Radiobutton(self, 
+                                     text=priority[0], 
+                                     value=priority[1], 
+                                     variable=selected)
+            priority_radio.pack(fill='x', padx=5,pady=5)
+
+        #status text field
+
+        # creatorID
+        
+        # open_date
+
+        # close_date
+
+        # body text
+
+        #create ticket button
         self.button = ttk.Button(self, text='Create Ticket')
         self.button['command'] = self.button_clicked
         self.button.pack(fill='x',expand=True, padx=20, pady=10)
 
+        # return button
+        homebutton = ttk.Button(self, text="Go to the start page",
+                           command=lambda: controller.show_frame("HomePage"))
+        homebutton.pack()
+
     def button_clicked(self):
         tickettitle = self.controller.shared_data["tickettitle"].get()
         showinfo(title='Information', message=f'You created a ticket! Title: {tickettitle}')
+        # this would be where I would call the method to createticket in DB if I was ready for that.
+
+    
 
 
 class PageTwo(tk.Frame):
