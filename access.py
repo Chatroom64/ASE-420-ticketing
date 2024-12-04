@@ -18,8 +18,8 @@ def signup_page(username: str, password: str):
     newUser += tuple(password,)
     newID = db_ops.add_signin(db_name,newUser)
     print(newID)
+
+# runtime code    
 username = input("Username: ")
 password = input("Password: ")
 signup_page(username, password)
-
-# Create the signup page
