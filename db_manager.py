@@ -59,7 +59,13 @@ class DatabaseOperation:
         lastid = self.execute_db_query(db_name,sql,reply)
         # return the last id
         return lastid   
-
+    def add_signin(db_name,username,password):
+        sql = ''' INSERT INTO signin(name, role, email, password)
+        VALUES(?,?,?,?)'''
+        # get id for confirmation
+        lastid = self.execute_db_query(db_name,sql,username,password)
+        # return the last id
+        return lastid 
     # UPDATE items in database
     def update_user(db_name,user,userID):
         sql = '''UPDATE users 
