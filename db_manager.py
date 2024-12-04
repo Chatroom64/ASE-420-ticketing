@@ -44,7 +44,7 @@ class DatabaseOperation:
             print(e)
 
     # adding to the database
-    def add_user(self,db_name:str,user:tuple):
+    def add_user(self,db_name:str,user:tuple) -> int:
         sql = ''' INSERT INTO users(name, role, email, password)
         VALUES(?,?,?,?)'''
         # get id for confirmation
@@ -58,14 +58,14 @@ class DatabaseOperation:
         lastid = self.execute_db_query(db_name,sql,ticket)
         # return the last id
         return lastid
-    def add_reply(self,db_name:str,reply:tuple):
+    def add_reply(self,db_name:str,reply:tuple) -> int:
         sql = ''' INSERT INTO replies(creator_id, post_date, body, ticket_id)
         VALUES(?, ?, ?, ?)'''
         # get id for confirmation
         lastid = self.execute_db_query(db_name,sql,reply)
         # return the last id
         return lastid   
-    def add_signin(self,db_name:str,login:tuple):
+    def add_signin(self,db_name:str,login:tuple) -> int:
         sql = ''' INSERT INTO signin(username, password)
         VALUES(?,?)'''
         # get id for confirmation
@@ -73,7 +73,7 @@ class DatabaseOperation:
         lastid = self.execute_db_query(db_name,sql,login)
         return lastid
     # UPDATE items in database
-    def update_user(self,db_name:str,user:tuple,userID):
+    def update_user(self,db_name:str,user:tuple,userID) -> int:
         sql = '''UPDATE users 
         SET name=?, role=?, email=?, password=? 
         WHERE id = ? '''
