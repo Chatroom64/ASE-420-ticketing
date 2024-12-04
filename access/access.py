@@ -8,9 +8,15 @@ def create_table():
 def add_user():
     username = input("Create username: ")
     password = input("Create password: ")
+    role = "client"
     cursor.execute("INSERT INTO signin (usernames, passwords) VALUES (?, ?)", (username, password,))
     conn.commit()
-# create signup page
+def auth_user():
+    username = input("Username: ")
+    password = input("Password: ")
+    isUsername = username == usernames
+    isPassword = password == passwords
+    # create signup page
 def signup_page():
     try:
         with sqlite3.connect("data.db") as conn:
@@ -22,8 +28,6 @@ def signup_page():
         print('Welcome, {username}!')
 signup_page()
 # Create the signin page
-def login():
-    if (username) == (''): print("access granted")
 def signin_page():
     try:
         with sqlite3.connect("data.db") as conn:
