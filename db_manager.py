@@ -199,7 +199,7 @@ except sqlite3.Error as e:
 print("User Exists Test")
 """
 
-sql = '''SELECT * FROM users WHERE email = ?'''
+"""sql = '''SELECT * FROM users WHERE email = ?'''
 try:
     with sqlite3.connect("data.db") as conn:
         cur = conn.cursor()
@@ -208,7 +208,7 @@ try:
         print(type(reply))
         print(reply)
 except sqlite3.Error as e:
-    print(f"Error fetching users by Email: {e}")
+    print(f"Error fetching users by Email: {e}")"""
 
 """
 sql = '''SELECT * FROM tickets'''

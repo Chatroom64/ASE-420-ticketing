@@ -113,8 +113,7 @@ class HomePage(tk.Frame):
         self.controller.shared_data["tickets"] = Ticket().get_tickets_by_user(self.controller.shared_data["userID"])
         self.display_tickets()
 
-
-        
+      
 class CreateTicket(tk.Frame):
     def __init__(self, parent, controller):
         ttk.Frame.__init__(self, parent)
@@ -217,38 +216,9 @@ class CreateTicket(tk.Frame):
         showinfo(title='Information', message=f'You created a ticket! Ticket ID: {new_ticket_id} Title: {tickettitle} Status: {ticketstatus}')
 
         # Optionally, clear the form or reset fields here
-        # You could also navigate back to the HomePage or other frame if needed
         self.controller.show_frame("HomePage")
 
-    def button_clicked(self):
-        # Get user inputs
-        tickettitle = self.controller.shared_data["tickettitle"].get()
-        ticketstatus = self.controller.shared_data["ticketstatus"].get()
-        creatorid = self.controller.shared_data["currentuser"].userID
-        opendate = self.controller.shared_data["open_date"].get()
-        body_text = self.controller.shared_data["body"].get()
-        priority = self.selected_priority.get() 
-
-        # Create the ticket object
-        new_ticket = Ticket()
-        new_ticket.set_most_noID(tickettitle, priority, ticketstatus, creatorid, opendate, body_text)
-
-        # Prepare ticket tuple for DB insertion
-        ticket_tuple = new_ticket.get_tuple_new()
-
-        # Add the ticket to the database
-        new_ticket_id = db_ops.add_ticket(db_name, ticket_tuple)
-
-        # Display success message
-        showinfo(title='Information', message=f'You created a ticket! Ticket ID: {new_ticket_id} Title: {tickettitle} Status: {ticketstatus}')
-
-         # Refresh the tickets on the HomePage
-        self.controller.frames["HomePage"].refresh_tickets()
-
-        # Optionally, clear the form or reset fields here
-        # You could also navigate back to the HomePage or other frame if needed
-        self.controller.show_frame("HomePage")
-       
+      
 
 class TicketDetails(tk.Frame):
     def __init__(self, parent, controller):
@@ -260,7 +230,6 @@ class TicketDetails(tk.Frame):
         self.details = tk.StringVar()
         self.ticket_details = ttk.Label(self, textvariable=self.details)
         self.ticket_details.pack()
-        
 
         # return button
         homebutton = ttk.Button(self, text="Go to the start page",
