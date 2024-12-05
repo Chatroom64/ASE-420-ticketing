@@ -14,8 +14,8 @@ def auth_user():
     # create signup page
     
 def signup_page(username: str, password: str):
-    newUser = tuple(username,)
-    newUser += tuple(password,)
+    newUser = (username,)
+    newUser += (password,)
     newID = db_ops.add_signin(db_name,newUser)
     print(newID)
 

@@ -9,6 +9,19 @@ except ImportError:
 #  Based off of https://stackoverflow.com/questions/7546050/switch-between-two-frames-in-tkinter/7557028#7557028
 # and https://www.pythontutorial.net/tkinter/tkraise/
 
+db_ops = DatabaseOperation()
+
+class user():
+    def __init__():
+        userID = ""
+        name = ""
+        email = ""
+        role = ""
+
+class ticket():
+    def __init__()
+    
+
 class App(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -96,6 +109,10 @@ class CreateTicket(tk.Frame):
             priority_radio.pack(fill='x', padx=5,pady=5)
 
         #status text field
+        status_label = ttk.Label(self, text = "Status:")
+        status_label.pack()
+
+        status_entry = ttk.Entry()
 
         # creatorID
         
@@ -120,8 +137,6 @@ class CreateTicket(tk.Frame):
         showinfo(title='Information', message=f'You created a ticket! Title: {tickettitle}')
         # this would be where I would call the method to createticket in DB if I was ready for that.
 
-    
-
 
 class PageTwo(tk.Frame):
     def __init__(self, parent, controller):
@@ -137,3 +152,4 @@ class PageTwo(tk.Frame):
 if __name__ == "__main__":
     app = App()
     app.mainloop()
+    db_ops.get_tickets_by_user(userID)
