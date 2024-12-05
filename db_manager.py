@@ -130,12 +130,11 @@ class DatabaseOperation:
         try:
             with sqlite3.connect(db_name) as conn:
                 cur = conn.cursor()
-                cur.execute(sql, (email,))
+                cur.execute(sql, email)
                 reply = cur.fetchone()
                 return reply  # Return the user as a tuple
         except sqlite3.Error as e:
             print(f"Error fetching users by Email: {e}")
-            return reply
     # get single ticket by id
     def get_ticket_by_id(self,db_name:str,ticket_id):
         sql = '''SELECT * FROM tickets WHERE id = ?'''
@@ -186,7 +185,9 @@ class DatabaseOperation:
             return None
         
 #########################
-"""sql = '''SELECT * FROM users'''
+
+"""
+sql = '''SELECT * FROM users'''
 try:
     with sqlite3.connect("data.db") as conn:
         cur = conn.cursor()
@@ -195,8 +196,21 @@ try:
         print(response)
 except sqlite3.Error as e:
     print(f"Error fetching users: {e}")
+print("User Exists Test")
+"""
 
+sql = '''SELECT * FROM users WHERE email = ?'''
+try:
+    with sqlite3.connect("data.db") as conn:
+        cur = conn.cursor()
+        cur.execute(sql, ("frank@mail.com",))
+        reply = cur.fetchone()
+        print(type(reply))
+        print(reply)
+except sqlite3.Error as e:
+    print(f"Error fetching users by Email: {e}")
 
+"""
 sql = '''SELECT * FROM tickets'''
 try:
     with sqlite3.connect("data.db") as conn:
@@ -206,7 +220,10 @@ try:
         print(response1)
 except sqlite3.Error as e:
     print(f"Error fetching tickets: {e}")
+print("tickets exist test")
+"""
 
+"""
 sql = '''SELECT * FROM replies'''
 try:
     with sqlite3.connect("data.db") as conn:

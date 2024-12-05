@@ -107,13 +107,13 @@ class Ticket(object):
         print(response)
 
 # Class Demo/Testing
-newTicket = Ticket()
+'''newTicket = Ticket()
 newTicket.set_most_noID("Blue","2","2",1,"06/10/2025","Hello?")
 newTicketTuple = newTicket.get_tuple_new()
 print(newTicketTuple)
 print(type(newTicketTuple))
 newTicketID = db_ops.add_ticket(db_name,newTicketTuple) 
-print(newTicketID)
+print(newTicketID)'''
 
 '''ticketsFromFrank = []
 newTickets = Ticket()

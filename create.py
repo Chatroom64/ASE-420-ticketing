@@ -1,14 +1,15 @@
 try:
-    import tkinter as tk                # python 3
-    from tkinter import ttk
+    import tkinter as tk    
+    import re        
+    from tkinter import ttk, Text
     from tkinter.messagebox import showinfo
     from tkinter import font as tkfont  # python 3
     from db_manager import DatabaseOperation
     from user import User
     from ticket import Ticket
     from reply import Reply
-
 except ImportError:
+    import re
     import Tkinter as tk     # python 2
     from tkinter import ttk
     import tkFont as tkfont  # python 2
@@ -21,8 +22,18 @@ class App(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self.shared_data = {
+            "currentuser": User(),
+            "tickets": [],
+            "currentticket": Ticket(),
+            "replies": [],
+            "currentreply": Reply(),
             "username": tk.StringVar(),
-            "tickettitle": tk.StringVar()
+            "tickettitle": tk.StringVar(),
+            "ticketstatus": tk.StringVar(),
+            "creatorid": tk.StringVar(),
+            "open_date": tk.StringVar(),
+            "close_date": tk.StringVar(),
+            "body": tk.StringVar(),
         }
         
         self.title('Ticket Tracker')
@@ -70,6 +81,14 @@ class HomePage(tk.Frame):
         button1.pack()
         button2.pack()
 
+        sep = ttk.Separator(self,orient='horizontal')
+        sep.pack(fill="x")
+        
+        
+
+        for ticket in tickets:
+            
+
 
 class CreateTicket(tk.Frame):
     def __init__(self, parent, controller):
@@ -107,15 +126,43 @@ class CreateTicket(tk.Frame):
         status_label = ttk.Label(self, text = "Status:")
         status_label.pack()
 
-        status_entry = ttk.Entry()
+        status_entry = ttk.Entry(self, textvariable=self.controller.shared_data["ticketstatus"])
+        status_entry.pack(padx=5, pady=5, fill='x', expand=False)
+        status_entry.focus()
 
         # creatorID
-        
+        creator_label = ttk.Label(self,text = "Creator:")
+        creator_label.pack()
+
+        creator_entry = ttk.Entry(self, text=self.controller.shared_data["creatorid"])
+        creator_entry.configure(state="disabled")
+        creator_entry.pack(padx=5, pady=5, fill='x', expand=False)
+        creator_entry.focus()
+
         # open_date
+        opendate_label = ttk.Label(self,text = "Open_Date:")
+        opendate_label.pack()
+
+        opendate_entry = ttk.Entry(self, textvariable=self.controller.shared_data["open_date"])
+        opendate_entry.pack(padx=5, pady=5, fill='x', expand=False)
+        opendate_entry.focus()
 
         # close_date
+        closedate_label = ttk.Label(self,text = "Close_Date:")
+        closedate_label.pack()
+
+        closedate_entry = ttk.Entry(self, textvariable=self.controller.shared_data["close_date"])
+        closedate_entry.pack(padx=5, pady=5, fill='x', expand=False)
+        closedate_entry.focus()
 
         # body text
+        body_label = ttk.Label(self,text = "Ticket Details:")
+        body_label.pack()
+
+        body_text = Text(self, height=8)
+        body_text.insert('1.0', "Enter details about the problem here.")
+        body_text.pack()
+
 
         #create ticket button
         self.button = ttk.Button(self, text='Create Ticket')
@@ -129,7 +176,11 @@ class CreateTicket(tk.Frame):
 
     def button_clicked(self):
         tickettitle = self.controller.shared_data["tickettitle"].get()
-        showinfo(title='Information', message=f'You created a ticket! Title: {tickettitle}')
+        ticketstatus = self.controller.shared_data["ticketstatus"].get()
+        creatorid = self.controller.shared_data["creatorid"].get()
+        creat
+        
+        showinfo(title='Information', message=f'You created a ticket! Title: {tickettitle} Status: {ticketstatus}')
         # this would be where I would call the method to createticket in DB if I was ready for that.
 
 
@@ -145,6 +196,6 @@ class PageTwo(tk.Frame):
 
 
 if __name__ == "__main__":
+    ticket = Ticket()
     app = App()
     app.mainloop()
-    db_ops.get_tickets_by_user(userID)
