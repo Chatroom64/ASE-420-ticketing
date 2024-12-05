@@ -32,7 +32,6 @@ class User(object):
     def fetch_user_by_email(self,db_name:str, userEmail:str):
         email = (userEmail, )
         response = db_ops.get_user_by_email(db_name,email)
-        
         if response:  # Ensure response is not None
             self.userID = response[0]
             self.name = response[1]
@@ -59,7 +58,7 @@ class User(object):
         return userTuple
     def get_from_DB(self, userID):
         response = db_ops.get_user_by_id(db_name,userID)
-        print(response)
+        return response
 
 # Class Demo/Testing
 '''newUser = User()
