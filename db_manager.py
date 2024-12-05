@@ -62,6 +62,7 @@ class DatabaseOperation:
         # get id for confirmation
         lastid = self.execute_db_query(db_name,sql,login)
         return lastid
+
     # UPDATE items in database
     def update_user(self,db_name:str,user:tuple,userID) -> int:
         sql = '''UPDATE users 
@@ -210,6 +211,7 @@ try:
 except sqlite3.Error as e:
     print(f"Error fetching users by Email: {e}")"""
 
+
 """
 sql = '''SELECT * FROM tickets'''
 try:
@@ -222,6 +224,7 @@ except sqlite3.Error as e:
     print(f"Error fetching tickets: {e}")
 print("tickets exist test")
 """
+
 
 """
 sql = '''SELECT * FROM replies'''

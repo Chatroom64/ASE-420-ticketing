@@ -43,7 +43,6 @@ class App(tk.Tk):
         tempTicket = Ticket()
         self.shared_data["userID"] = 1
         self.shared_data["tickets"] = tempTicket.get_tickets_by_user(self.shared_data["userID"])
-
         self.title('Ticket Tracker')
         self.geometry('450x600')
 
@@ -96,6 +95,7 @@ class HomePage(tk.Frame):
         
     def display_tickets(self):
         tickets = self.controller.shared_data["tickets"]
+        print(tickets)
         for ticket in tickets:
             ticket_button = ttk.Button(
                 self,
@@ -195,8 +195,10 @@ class CreateTicket(tk.Frame):
         # Get user inputs
         tickettitle = self.controller.shared_data["tickettitle"].get()
         ticketstatus = self.controller.shared_data["ticketstatus"].get()
-        creatorid = self.controller.shared_data["currentuser"].userID
+        creatorid = 1
+        # creatorid = self.controller.shared_data["currentuser"].userID
         opendate = self.controller.shared_data["open_date"].get()
+        closedate = " "
         body_text = self.controller.shared_data["body"].get()
 
         # Access selected priority via instance variable
@@ -208,6 +210,7 @@ class CreateTicket(tk.Frame):
 
         # Prepare ticket tuple for DB insertion
         ticket_tuple = new_ticket.get_tuple_new()
+        print(ticket_tuple)
 
         # Add the ticket to the database
         new_ticket_id = db_ops.add_ticket(db_name, ticket_tuple)
@@ -218,23 +221,22 @@ class CreateTicket(tk.Frame):
         # Optionally, clear the form or reset fields here
         self.controller.show_frame("HomePage")
 
-      
-
 class TicketDetails(tk.Frame):
     def __init__(self, parent, controller):
         ttk.Frame.__init__(self, parent)
         self.controller = controller
+        
+        # return button
+        homebutton = ttk.Button(self, text="Go to the start page",
+                           command=lambda: controller.show_frame("HomePage"))
+        homebutton.pack()
+
         self.ticket_label = ttk.Label(self, text="Ticket Details", font=controller.title_font)
         self.ticket_label.pack(side="top", fill="x", pady=10)
 
         self.details = tk.StringVar()
         self.ticket_details = ttk.Label(self, textvariable=self.details)
         self.ticket_details.pack()
-
-        # return button
-        homebutton = ttk.Button(self, text="Go to the start page",
-                           command=lambda: controller.show_frame("HomePage"))
-        homebutton.pack()
 
     def load_ticket(self, ticket):
         self.details.set(f"Title: {ticket.title}\nStatus: {ticket.status}\nDetails: {ticket.body}")

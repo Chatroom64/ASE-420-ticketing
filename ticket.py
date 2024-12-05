@@ -10,7 +10,7 @@ class Ticket(object):
         self.status = ""
         self.creator_id = ""
         self.open_date = ""
-        self.close_date = ""
+        self.close_date = " "
         self.body = ""
         self.ticketTuple = ("",)
         
@@ -107,18 +107,19 @@ class Ticket(object):
         print(response)
 
 # Class Demo/Testing
-'''newTicket = Ticket()
-newTicket.set_most_noID("Blue","2","2",1,"06/10/2025","Hello?")
+"""newTicket = Ticket()
+newTicket.set_most_noID("Hello","2","2",1,"06/10/2025","World?")
 newTicketTuple = newTicket.get_tuple_new()
 print(newTicketTuple)
 print(type(newTicketTuple))
 newTicketID = db_ops.add_ticket(db_name,newTicketTuple) 
-print(newTicketID)'''
+print(newTicketID)"""
 
-'''ticketsFromFrank = []
+"""ticketsFromFrank = []
 newTickets = Ticket()
 
 ticketsFromFrank = newTickets.get_tickets_by_user(1)
-
+print("The tickets from frank")
+print(ticketsFromFrank)
 for ticket in ticketsFromFrank:
-    print(ticket)'''
+    print(ticket)"""
