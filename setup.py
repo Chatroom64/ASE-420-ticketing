@@ -5,7 +5,7 @@ sql_statements = [
             id INTEGER PRIMARY KEY, 
             name text NOT NULL, 
             role INT NOT NULL, 
-            email text NOT NULL,
+            email text UNIQUE NOT NULL,
             password text NOT NULL
         );""",
 
@@ -21,7 +21,7 @@ sql_statements = [
             FOREIGN KEY (creator_id) REFERENCES users (id)
         );""",
 
-    """CREATE TABLE IF NOT EXISTS reply (
+    """CREATE TABLE IF NOT EXISTS replies (
             id INTEGER PRIMARY KEY,
             creator_id INT NOT NULL, 
             post_date DATE NOT NULL, 

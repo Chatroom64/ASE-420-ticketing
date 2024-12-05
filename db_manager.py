@@ -113,17 +113,29 @@ class DatabaseOperation:
         
     # GET from databse
     # get single user by id
-    def get_user_by_id(self,db_name:str,user_id):
+    def get_user_by_id(self,db_name:str,creator_id):
         sql = '''SELECT * FROM users WHERE id = ?'''
         try:
             with sqlite3.connect(db_name) as conn:
                 cur = conn.cursor()
-                cur.execute(sql, (user_id,))
+                cur.execute(sql, (creator_id,))
                 reply = cur.fetchone()
                 return reply  # Return the user as a tuple
         except sqlite3.Error as e:
             print(f"Error fetching reply by ID: {e}")
-            return None
+            return reply
+    # get single user by email
+    def get_user_by_email(self,db_name:str,email:str):
+        sql = '''SELECT * FROM users WHERE email = ?'''
+        try:
+            with sqlite3.connect(db_name) as conn:
+                cur = conn.cursor()
+                cur.execute(sql, (email,))
+                reply = cur.fetchone()
+                return reply  # Return the user as a tuple
+        except sqlite3.Error as e:
+            print(f"Error fetching users by Email: {e}")
+            return reply
     # get single ticket by id
     def get_ticket_by_id(self,db_name:str,ticket_id):
         sql = '''SELECT * FROM tickets WHERE id = ?'''
@@ -137,17 +149,17 @@ class DatabaseOperation:
             print(f"Error fetching reply by ID: {e}")
             return None
     # get all replies for a user
-    def get_tickets_by_user(self,db_name:str,user_id):
-        sql = '''SELECT * FROM tickets WHERE user_id = ? ORDER BY post_date'''
+    def get_tickets_by_user(self,db_name:str,creator_id:int):
+        sql = '''SELECT * FROM tickets WHERE creator_id = ? ORDER BY open_date'''
         try:
             with sqlite3.connect(db_name) as conn:
                 cur = conn.cursor()
-                cur.execute(sql, (user_id,))
+                cur.execute(sql, (creator_id,))
                 replies = cur.fetchall()
                 return replies  # Return a list of tickets
         except sqlite3.Error as e:
-            print(f"Error fetching replies by ticket ID: {e}")
-            return None
+            print("Error fetching tickets by user ID:")
+            print(e)
     # get single reply by id
     def get_reply_by_id(self,db_name:str,reply_id):
         sql = '''SELECT * FROM replies WHERE id = ?'''
@@ -172,3 +184,37 @@ class DatabaseOperation:
         except sqlite3.Error as e:
             print(f"Error fetching replies by ticket ID: {e}")
             return None
+        
+#########################
+"""sql = '''SELECT * FROM users'''
+try:
+    with sqlite3.connect("data.db") as conn:
+        cur = conn.cursor()
+        cur.execute(sql)
+        response = cur.fetchall()
+        print(response)
+except sqlite3.Error as e:
+    print(f"Error fetching users: {e}")
+
+
+sql = '''SELECT * FROM tickets'''
+try:
+    with sqlite3.connect("data.db") as conn:
+        cur = conn.cursor()
+        cur.execute(sql)
+        response1 = cur.fetchall()
+        print(response1)
+except sqlite3.Error as e:
+    print(f"Error fetching tickets: {e}")
+
+sql = '''SELECT * FROM replies'''
+try:
+    with sqlite3.connect("data.db") as conn:
+        cur = conn.cursor()
+        cur.execute(sql)
+        response2 = cur.fetchall()
+        print(response2)
+except sqlite3.Error as e:
+    print(f"Error fetching replies: {e}")"""
+
+########################### 
